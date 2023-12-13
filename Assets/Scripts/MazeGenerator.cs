@@ -33,6 +33,9 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+                cellGrid[i, j].x = i*2+1;
+                cellGrid[i, j].y = j*2+1;
+                
                 if (j + 1 < height)
                     cellGrid[i, j].topNeighbour = cellGrid[i, j + 1];
                 if (j - 1 >= 0)
@@ -64,8 +67,35 @@ public class MazeGenerator : MonoBehaviour
                     case 0:
                         if (currentCell.topNeighbour is not null && currentCell.topNeighbour.visited == false)
                         {
-                            //TODO: remove wall between
+                            mazeGrid[currentCell.x, currentCell.y + 1] = true;
                             currentCell.topNeighbour.visited = true;
+                            cellStack.Push(currentCell);
+                            cellStack.Push(currentCell.topNeighbour);
+                        }
+                        break;
+                    case 1:
+                        if (currentCell.rightNeighbour is not null && currentCell.rightNeighbour.visited == false)
+                        {
+                            mazeGrid[currentCell.x + 1, currentCell.y] = true;
+                            currentCell.rightNeighbour.visited = true;
+                            cellStack.Push(currentCell);
+                            cellStack.Push(currentCell.topNeighbour);
+                        }
+                        break;
+                    case 2:
+                        if (currentCell.bottomNeighbour is not null && currentCell.bottomNeighbour.visited == false)
+                        {
+                            mazeGrid[currentCell.x, currentCell.y - 1] = true;
+                            currentCell.bottomNeighbour.visited = true;
+                            cellStack.Push(currentCell);
+                            cellStack.Push(currentCell.topNeighbour);
+                        }
+                        break;
+                    case 3:
+                        if (currentCell.leftNeighbour is not null && currentCell.leftNeighbour.visited == false)
+                        {
+                            mazeGrid[currentCell.x - 1, currentCell.y] = true;
+                            currentCell.leftNeighbour.visited = true;
                             cellStack.Push(currentCell);
                             cellStack.Push(currentCell.topNeighbour);
                         }

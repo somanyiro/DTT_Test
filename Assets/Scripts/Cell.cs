@@ -5,6 +5,9 @@ using UnityEngine;
 public class Cell
 {
     public bool visited = false;
+    
+    public int x;
+    public int y;
 
     public Cell topNeighbour;
     public Cell rightNeighbour;
