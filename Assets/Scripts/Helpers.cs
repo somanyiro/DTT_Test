@@ -26,12 +26,12 @@ public static class Helpers
         return array;
     }
     
-    public static T[,] InitializeArray<T>(int lengthX, int lengthY) where T : new()
+    public static T[,] InitializeArray<T>(int rows, int columns) where T : new()
     {
-        T[,] array = new T[lengthX, lengthY];
-        for (int i = 0; i < lengthX; ++i)
+        T[,] array = new T[rows, columns];
+        for (int i = 0; i < rows; ++i)
         {
-            for (int j = 0; j < lengthY; j++)
+            for (int j = 0; j < columns; j++)
             {  
                 array[i,j] = new T();
             }
