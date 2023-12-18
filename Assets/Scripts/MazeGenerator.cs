@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Loading;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -10,10 +13,13 @@ public class MazeGenerator : MonoBehaviour
 
     private Stack<Cell> cellStack = new Stack<Cell>();
 
+    public GameObject wallPrefab;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        Generate(10,20);
+        SpawnWalls();
     }
 
     // Update is called once per frame
@@ -25,7 +31,7 @@ public class MazeGenerator : MonoBehaviour
     void Generate(int width, int height)
     {
         //create arrays
-        cellGrid = new Cell[width,height];
+        cellGrid = Helpers.InitializeArray<Cell>(width, height);
         mazeGrid = new bool[width * 2 + 1, height * 2 + 1];
 
         //make cell connections
@@ -48,7 +54,7 @@ public class MazeGenerator : MonoBehaviour
         }
         
         //generation
-        Cell currentCell = cellGrid[Random.Range(0, width),Random.Range(0, height)];
+        Cell currentCell = cellGrid[/*Random.Range(0, width),Random.Range(0, height)*/0,0];
         currentCell.visited = true;
         cellStack.Push(currentCell);
 
@@ -56,6 +62,14 @@ public class MazeGenerator : MonoBehaviour
         {
             currentCell = cellStack.Pop();
 
+            if (currentCell is null)//need to remove this
+            {
+                Debug.Log("encountered null cell");
+                continue;
+            }
+            
+            mazeGrid[currentCell.x, currentCell.y] = true;
+            
             int[] directions = {0,1,2,3};
             
             directions.KnuthShuffle();
@@ -108,6 +122,20 @@ public class MazeGenerator : MonoBehaviour
 
     }
 
+    void SpawnWalls()
+    {
+        if (wallPrefab is null) throw new Exception("no wall prefab given");
+
+        for (int i = 0; i < mazeGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < mazeGrid.GetLength(1); j++)
+            {
+                if (mazeGrid[i,j]) continue;
+                Instantiate(wallPrefab, new Vector3(i, 0, j), Quaternion.identity);
+            }
+        }
+    }
+    
     void ClearMaze()
     {
         

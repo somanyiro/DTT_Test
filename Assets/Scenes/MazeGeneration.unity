@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f2df8717d2a8b22b9cfa1da7652079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallPrefab: {fileID: 919132149155446097, guid: 55205fa9844057ae8960802763fa9120, type: 3}
 --- !u!4 &1407445675
 Transform:
   m_ObjectHideFlags: 0
@@ -196,7 +197,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
