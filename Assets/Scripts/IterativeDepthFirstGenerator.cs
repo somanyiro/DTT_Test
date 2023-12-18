@@ -41,12 +41,6 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
         while (cellStack.Count > 0)
         {
             currentCell = cellStack.Pop();
-            
-            if (currentCell is null)//need to remove this
-            {
-                Debug.Log("encountered null cell");
-                continue;
-            }
 
             int[] directions = {0,1,2,3};
         
@@ -71,7 +65,7 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                             mazeGrid[currentCell.y, currentCell.x + 1] = true;
                             currentCell.rightNeighbour.visited = true;
                             cellStack.Push(currentCell);
-                            cellStack.Push(currentCell.topNeighbour);
+                            cellStack.Push(currentCell.rightNeighbour);
                         }
                         break;
                     case 2:
@@ -80,7 +74,7 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                             mazeGrid[currentCell.y - 1, currentCell.x] = true;
                             currentCell.bottomNeighbour.visited = true;
                             cellStack.Push(currentCell);
-                            cellStack.Push(currentCell.topNeighbour);
+                            cellStack.Push(currentCell.bottomNeighbour);
                         }
                         break;
                     case 3:
@@ -89,7 +83,7 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                             mazeGrid[currentCell.y, currentCell.x - 1] = true;
                             currentCell.leftNeighbour.visited = true;
                             cellStack.Push(currentCell);
-                            cellStack.Push(currentCell.topNeighbour);
+                            cellStack.Push(currentCell.leftNeighbour);
                         }
                         break;
                     default:
