@@ -13,6 +13,33 @@ public class MazeSpawner : MonoBehaviour
     public int mazeHeight = 10;
     
     public GameObject wallPrefab;
+
+    public Camera camera;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        SpawnMaze();
+        PositionCamera();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ClearMaze();
+            SpawnMaze();
+        }
+    }
+
+    public void ClearMaze()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
     
     public void SpawnMaze()
     {
@@ -25,20 +52,15 @@ public class MazeSpawner : MonoBehaviour
             for (int j = 0; j < mazeGrid.GetLength(1); j++)
             {
                 if (mazeGrid[i,j]) continue;
-                Instantiate(wallPrefab, new Vector3(i, 0, j), Quaternion.identity);
+                var wall = Instantiate(wallPrefab, new Vector3(i, 0, j), Quaternion.identity);
+                wall.transform.parent = gameObject.transform;
             }
         }
     }
 
-// Start is called before the first frame update
-    void Start()
+    void PositionCamera()
     {
-        SpawnMaze();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
+        camera.transform.LookAt(centerPosition);
     }
 }

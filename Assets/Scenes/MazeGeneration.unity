@@ -167,9 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dfd9ddcf814c0da0a0f66faab1d8229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeWidth: 20
-  mazeHeight: 10
+  mazeWidth: 30
+  mazeHeight: 30
   wallPrefab: {fileID: 919132149155446097, guid: 55205fa9844057ae8960802763fa9120, type: 3}
+  camera: {fileID: 2119878288}
 --- !u!1 &1530391257
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,7 +432,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -456,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 2119878286}
   serializedVersion: 2
   m_LocalRotation: {x: 0.26523688, y: -0, z: -0, w: 0.9641833}
-  m_LocalPosition: {x: 0, y: 9.26, z: -10}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

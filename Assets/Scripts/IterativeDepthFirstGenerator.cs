@@ -95,16 +95,4 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
         return mazeGrid;
     }
 
-    void SpawnWalls()
-    {
-        
-    }
-    
-    void ClearMaze()
-    {
-        
-    }
-    
-    
-    
 }
