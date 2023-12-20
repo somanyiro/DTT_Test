@@ -15,6 +15,8 @@ public class MazeSpawner : MonoBehaviour
     public GameObject wallPrefab;
 
     public Camera camera;
+    public IntegerInputField widthInput;
+    public IntegerInputField heightInput;
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +28,6 @@ public class MazeSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ClearMaze();
-            SpawnMaze();
-        }
     }
 
     public void ClearMaze()
@@ -63,7 +60,19 @@ public class MazeSpawner : MonoBehaviour
 
     void PositionCamera()
     {
+        if (camera is null) return;
         Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
         camera.transform.LookAt(centerPosition);
     }
+
+    public void RuntimeSpawn()
+    {
+        if (widthInput is not null) mazeWidth = widthInput.Value;
+        if (heightInput is not null) mazeHeight = heightInput.Value;
+
+        ClearMaze();
+        SpawnMaze();
+        PositionCamera();
+    }
+    
 }
