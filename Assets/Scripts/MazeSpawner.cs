@@ -37,7 +37,10 @@ public class MazeSpawner : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            if (Application.isEditor)
+                DestroyImmediate(child.gameObject);
+            else
+                Destroy(child.gameObject);
         }
     }
     
