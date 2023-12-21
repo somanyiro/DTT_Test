@@ -66,7 +66,17 @@ public class MazeSpawner : MonoBehaviour
         if (camera is null) return;
         Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
         camera.transform.position = centerPosition + Vector3.up * 100;
-        camera.transform.LookAt(centerPosition);
+
+        if (mazeGrid.GetLength(1) > mazeGrid.GetLength(0))
+        {
+            camera.transform.rotation = Quaternion.Euler(90,0,0);
+            camera.orthographicSize = mazeGrid.GetLength(1)/2+1;
+        }
+        else
+        {
+            camera.transform.rotation = Quaternion.Euler(90,90,0);
+            camera.orthographicSize = mazeGrid.GetLength(0)/2+1;
+        }
     }
 
     public void RuntimeSpawn()
