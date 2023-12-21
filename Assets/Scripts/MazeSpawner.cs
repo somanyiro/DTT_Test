@@ -8,6 +8,7 @@ public class MazeSpawner : MonoBehaviour
     IMazeGenerator mazeGenerator = new IterativeDepthFirstGenerator();
 
     private bool[,] mazeGrid;
+    private GameObject[,] spawnedWalls;
     
     public int mazeWidth = 20;
     public int mazeHeight = 10;
@@ -76,6 +77,42 @@ public class MazeSpawner : MonoBehaviour
         ClearMaze();
         SpawnMaze();
         PositionCamera();
+    }
+
+    public void StepByStepSpawn()
+    {
+        StartCoroutine(StepByStepRoutine());
+    }
+
+    IEnumerator StepByStepRoutine()
+    {
+        if (widthInput is not null) mazeWidth = widthInput.Value;
+        if (heightInput is not null) mazeHeight = heightInput.Value;
+        
+        ClearMaze();
+        
+        mazeGrid = mazeGenerator.Generate(mazeWidth, mazeHeight);
+        spawnedWalls = new GameObject[mazeGrid.GetLength(0), mazeGrid.GetLength(1)];
+        
+        if (wallPrefab is null) Debug.LogError("no wall prefab was set");
+
+        for (int i = 0; i < mazeGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < mazeGrid.GetLength(1); j++)
+            {
+                var wall = Instantiate(wallPrefab, new Vector3(i, 0, j), Quaternion.identity);
+                wall.transform.parent = gameObject.transform;
+                spawnedWalls[i, j] = wall;
+            }
+        }
+
+        var generationHistory = mazeGenerator.GetGenerationHistory();
+
+        foreach (var step in generationHistory)
+        {
+            Destroy(spawnedWalls[step.row, step.column]);
+            yield return new WaitForSeconds(0.01f);
+        }
     }
     
 }
