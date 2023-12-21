@@ -65,6 +65,7 @@ public class MazeSpawner : MonoBehaviour
     {
         if (camera is null) return;
         Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
+        camera.transform.position = centerPosition + Vector3.up * 100;
         camera.transform.LookAt(centerPosition);
     }
 
@@ -88,7 +89,7 @@ public class MazeSpawner : MonoBehaviour
     {
         if (widthInput is not null) mazeWidth = widthInput.Value;
         if (heightInput is not null) mazeHeight = heightInput.Value;
-        
+
         ClearMaze();
         
         mazeGrid = mazeGenerator.Generate(mazeWidth, mazeHeight);
@@ -105,6 +106,8 @@ public class MazeSpawner : MonoBehaviour
                 spawnedWalls[i, j] = wall;
             }
         }
+        
+        PositionCamera();
 
         var generationHistory = mazeGenerator.GetGenerationHistory();
 
@@ -114,7 +117,6 @@ public class MazeSpawner : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         
-        PositionCamera();
     }
     
 }
