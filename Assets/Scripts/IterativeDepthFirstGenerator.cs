@@ -8,12 +8,14 @@ using Random = UnityEngine.Random;
 
 public class IterativeDepthFirstGenerator : IMazeGenerator
 {
+    private List<(int row, int column)> history;
 
     public bool[,] Generate(int width, int height)
     {
         Cell[,] cellGrid = Helpers.InitializeArray<Cell>(height, width);
         bool[,] mazeGrid = new bool[height * 2 + 1, width * 2 + 1];//a grid for the walls in-between and around the cells
         Stack<Cell> cellStack = new Stack<Cell>();
+        history = new List<(int i, int j)>();
         
         for (int y = 0; y < height; y++)
         {
@@ -23,7 +25,8 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                 cellGrid[y, x].x = x*2+1;
                 cellGrid[y, x].y = y*2+1;
                 
-                mazeGrid[y*2+1, x*2+1] = true;
+                //mazeGrid[y*2+1, x*2+1] = true;
+                SetCellAndRecord(ref mazeGrid, y*2+1, x*2+1, true);
                 
                 //give the cells references to their neighbours
                 if (y + 1 < height) cellGrid[y, x].topNeighbour = cellGrid[y + 1, x];
@@ -53,7 +56,8 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                     case 0:
                         if (currentCell.topNeighbour is not null && currentCell.topNeighbour.visited == false)
                         {
-                            mazeGrid[currentCell.y + 1, currentCell.x] = true;
+                            SetCellAndRecord(ref mazeGrid, currentCell.y + 1, currentCell.x, true);
+                            //mazeGrid[currentCell.y + 1, currentCell.x] = true;
                             currentCell.topNeighbour.visited = true;
                             cellStack.Push(currentCell);
                             cellStack.Push(currentCell.topNeighbour);
@@ -62,7 +66,8 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                     case 1:
                         if (currentCell.rightNeighbour is not null && currentCell.rightNeighbour.visited == false)
                         {
-                            mazeGrid[currentCell.y, currentCell.x + 1] = true;
+                            SetCellAndRecord(ref mazeGrid, currentCell.y, currentCell.x + 1, true);
+                            //mazeGrid[currentCell.y, currentCell.x + 1] = true;
                             currentCell.rightNeighbour.visited = true;
                             cellStack.Push(currentCell);
                             cellStack.Push(currentCell.rightNeighbour);
@@ -71,7 +76,8 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                     case 2:
                         if (currentCell.bottomNeighbour is not null && currentCell.bottomNeighbour.visited == false)
                         {
-                            mazeGrid[currentCell.y - 1, currentCell.x] = true;
+                            SetCellAndRecord(ref mazeGrid, currentCell.y - 1, currentCell.x, true);
+                            //mazeGrid[currentCell.y - 1, currentCell.x] = true;
                             currentCell.bottomNeighbour.visited = true;
                             cellStack.Push(currentCell);
                             cellStack.Push(currentCell.bottomNeighbour);
@@ -80,7 +86,8 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
                     case 3:
                         if (currentCell.leftNeighbour is not null && currentCell.leftNeighbour.visited == false)
                         {
-                            mazeGrid[currentCell.y, currentCell.x - 1] = true;
+                            SetCellAndRecord(ref mazeGrid, currentCell.y, currentCell.x - 1, true);
+                            //mazeGrid[currentCell.y, currentCell.x - 1] = true;
                             currentCell.leftNeighbour.visited = true;
                             cellStack.Push(currentCell);
                             cellStack.Push(currentCell.leftNeighbour);
@@ -95,4 +102,15 @@ public class IterativeDepthFirstGenerator : IMazeGenerator
         return mazeGrid;
     }
 
+    public List<(int row, int column)> GetGenerationHistory()
+    {
+        return history;
+    }
+
+    void SetCellAndRecord(ref bool[,] array, int row, int column, bool value)
+    {
+        array[row, column] = value;
+        history.Add((row, column));
+    }
+    
 }
