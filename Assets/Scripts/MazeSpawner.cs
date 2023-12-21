@@ -33,21 +33,19 @@ public class MazeSpawner : MonoBehaviour
 
     public void ClearMaze()
     {
-        foreach (Transform child in transform)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            DestroyImmediate(child.gameObject);
-            /*
-            if (Application.isEditor)
-                DestroyImmediate(child.gameObject);
+            if (!Application.isPlaying)
+                DestroyImmediate(transform.GetChild(i).gameObject, true);
             else
-                Destroy(child.gameObject);
-            */
+                Destroy(transform.GetChild(i).gameObject);
         }
     }
     
     public void SpawnMaze()
     {
         mazeGrid = mazeGenerator.Generate(mazeWidth, mazeHeight);
+        spawnedWalls = new GameObject[mazeGrid.GetLength(0), mazeGrid.GetLength(1)];
         
         if (wallPrefab is null) Debug.LogError("no wall prefab was set");
 
@@ -58,6 +56,7 @@ public class MazeSpawner : MonoBehaviour
                 if (mazeGrid[i,j]) continue;
                 var wall = Instantiate(wallPrefab, new Vector3(i, 0, j), Quaternion.identity);
                 wall.transform.parent = gameObject.transform;
+                spawnedWalls[i, j] = wall;
             }
         }
     }
@@ -81,6 +80,7 @@ public class MazeSpawner : MonoBehaviour
 
     public void StepByStepSpawn()
     {
+        StopCoroutine(StepByStepRoutine());
         StartCoroutine(StepByStepRoutine());
     }
 
@@ -113,6 +113,8 @@ public class MazeSpawner : MonoBehaviour
             Destroy(spawnedWalls[step.row, step.column]);
             yield return new WaitForSeconds(0.01f);
         }
+        
+        PositionCamera();
     }
     
 }
