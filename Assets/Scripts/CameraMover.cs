@@ -29,6 +29,8 @@ public class CameraMover : MonoBehaviour
             transform.position -= flatForward * mouseMovement.y * moveSpeed;
             transform.position -= flatRight * mouseMovement.x * moveSpeed;
         }
-        
+
+        Camera camera = GetComponent<Camera>();
+        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + Input.mouseScrollDelta.y, 1, 500);
     }
 }
