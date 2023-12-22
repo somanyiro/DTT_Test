@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraMover : MonoBehaviour
 {
+    public float moveSpeed = 1f;
+    
     private Vector3 prevMousePos;
     
     // Start is called before the first frame update
@@ -24,8 +26,9 @@ public class CameraMover : MonoBehaviour
             Vector3 flatForward = new Vector3(forward.x, 0, forward.z).normalized;
             Vector3 flatRight = new Vector3(flatForward.z, 0, -flatForward.x);
 
-            transform.position -= flatForward * mouseMovement.y;
-            transform.position -= flatRight * mouseMovement.x;
+            transform.position -= flatForward * mouseMovement.y * moveSpeed;
+            transform.position -= flatRight * mouseMovement.x * moveSpeed;
         }
+        
     }
 }

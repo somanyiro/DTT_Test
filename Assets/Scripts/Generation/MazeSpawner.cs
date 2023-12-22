@@ -31,6 +31,8 @@ public class MazeSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            FreeCamera();
     }
 
     public void ClearMaze()
