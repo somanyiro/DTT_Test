@@ -19,6 +19,8 @@ public class MazeSpawner : MonoBehaviour
     public IntegerInputField widthInput;
     public IntegerInputField heightInput;
 
+    private bool cameraIsFree = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +81,14 @@ public class MazeSpawner : MonoBehaviour
         }
     }
 
+    void FreeCamera()
+    {
+        if (camera is null) return;
+        Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
+        camera.transform.position = Vector3.up * 100;
+        camera.transform.LookAt(centerPosition);
+    }
+    
     public void RuntimeSpawn()
     {
         if (widthInput is not null) mazeWidth = widthInput.Value;
