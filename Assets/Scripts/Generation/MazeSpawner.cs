@@ -65,7 +65,7 @@ public class MazeSpawner : MonoBehaviour
         }
     }
 
-    void PositionCamera()
+    public void PositionCamera()
     {
         if (camera is null) return;
         Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);
@@ -83,7 +83,7 @@ public class MazeSpawner : MonoBehaviour
         }
     }
 
-    void FreeCamera()
+    public void FreeCamera()
     {
         if (camera is null) return;
         Vector3 centerPosition = new Vector3(mazeGrid.GetLength(0)/2, 0, mazeGrid.GetLength(1)/2);

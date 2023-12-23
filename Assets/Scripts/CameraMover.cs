@@ -17,6 +17,7 @@ public class CameraMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Camera camera = GetComponent<Camera>();
         Vector2 mouseMovement = Input.mousePosition - prevMousePos;
         prevMousePos = Input.mousePosition;
 
@@ -30,7 +31,6 @@ public class CameraMover : MonoBehaviour
             transform.position -= flatRight * mouseMovement.x * moveSpeed;
         }
 
-        Camera camera = GetComponent<Camera>();
-        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + Input.mouseScrollDelta.y, 1, 500);
+        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize - Input.mouseScrollDelta.y, 1, 500);
     }
 }
