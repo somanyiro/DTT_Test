@@ -35,17 +35,35 @@ public class MazeSpawner : MonoBehaviour
             FreeCamera();
     }
 
+    /// <summary>
+    /// Deletes already spawned walls
+    /// </summary>
     public void ClearMaze()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        int tries = 0;
+        if (!Application.isPlaying)
         {
-            if (!Application.isPlaying)
-                DestroyImmediate(transform.GetChild(i).gameObject, true);
-            else
+            //At the moment I don't know why, but at editor time, DestroyImmediate doesn't always work
+            while (transform.childCount > 0 && tries <= 15)
+            {
+                for (int j = 0; j < transform.childCount; j++)
+                {
+                    DestroyImmediate(transform.GetChild(j).gameObject, true);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
                 Destroy(transform.GetChild(i).gameObject);
+            }
         }
     }
     
+    /// <summary>
+    /// Generates a new maze and spawns the walls instantaneously
+    /// </summary>
     public void SpawnMaze()
     {
         mazeGrid = mazeGenerator.Generate(mazeWidth, mazeHeight);
@@ -65,6 +83,10 @@ public class MazeSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Positions the camera above the maze looking down and scales it so the entire maze fits on screen.
+    /// It might rotate the camera because the width is determined by the aspect ratio
+    /// </summary>
     public void PositionCamera()
     {
         if (camera is null) return;
@@ -83,6 +105,9 @@ public class MazeSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Positions the camera to look at the maze in a diagonal angle
+    /// </summary>
     public void FreeCamera()
     {
         if (camera is null) return;
@@ -91,6 +116,9 @@ public class MazeSpawner : MonoBehaviour
         camera.transform.LookAt(centerPosition);
     }
     
+    /// <summary>
+    /// Use this to spawn a maze at runtime
+    /// </summary>
     public void RuntimeSpawn()
     {
         if (widthInput is not null) mazeWidth = widthInput.Value;
@@ -101,12 +129,18 @@ public class MazeSpawner : MonoBehaviour
         PositionCamera();
     }
 
+    /// <summary>
+    /// Generates a maze and shows the process over time via a coroutine
+    /// </summary>
     public void StepByStepSpawn()
     {
         StopCoroutine(StepByStepRoutine());
         StartCoroutine(StepByStepRoutine());
     }
 
+    /// <summary>
+    /// Routine to delete walls according to the generation history
+    /// </summary>
     IEnumerator StepByStepRoutine()
     {
         if (widthInput is not null) mazeWidth = widthInput.Value;

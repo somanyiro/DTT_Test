@@ -18,6 +18,8 @@ public class CameraMover : MonoBehaviour
     void Update()
     {
         Camera camera = GetComponent<Camera>();
+        if (transform.forward == Vector3.down) return;
+
         Vector2 mouseMovement = Input.mousePosition - prevMousePos;
         prevMousePos = Input.mousePosition;
 
